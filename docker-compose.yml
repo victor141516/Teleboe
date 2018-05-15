@@ -1,0 +1,28 @@
+version: '3'
+services:
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    networks:
+      - teleboe
+    volumes:
+      - ./words:/data
+    command: redis-server --appendonly yes
+
+  teleboe:
+    container_name: teleboe
+    image: teleboe
+    build:
+      context: .
+    networks:
+      - teleboe
+    environment:
+      - TG_TOKEN=XXXXXXXXXXXXXXXXXXXXXXX
+      # - WEBHOOK_URL=https://domain.com
+    command: python bot.py
+    # command: gunicorn -w1 -b :8000 bot:app
+
+networks:
+  teleboe:
+    driver: bridge
