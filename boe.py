@@ -5,7 +5,6 @@ import xmltodict
 
 BOE_BARE_BASE_URL = 'http://boe.es'
 BOE_BASE_URL = f'{BOE_BARE_BASE_URL}/diario_boe/xml.php?id=BOE-'
-words = ['Víctor']
 
 
 def get_boe_url(date=None):
