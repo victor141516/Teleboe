@@ -126,9 +126,9 @@ def check_and_send_appearances(date=None, user=None):
 
     for a in appearances:
         if len(appearances[a]) is 1:
-            message = f'La palabra "{appearances[a][0]}"" aparece en el articulo "{a}". El PDF es {boe_items[a]["pdf"]}'
+            message = f'La palabra {appearances[a][0]} aparece en el articulo "{a}". El PDF es {boe_items[a]["pdf"]}'
         else:
-            message = f'Las palabras "{"\", \"".join(appearances[a])}" aparecen en el articulo "{a}". El PDF es {boe_items[a]["pdf"]}'
+            message = f'Las palabras {", ".join(appearances[a])[::-1].replace(' ,', ' y ', 1)[::-1]} aparecen en el articulo "{a}". El PDF es {boe_items[a]["pdf"]}'
 
         bot.send_message(
             int(user),
