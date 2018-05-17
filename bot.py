@@ -125,9 +125,14 @@ def check_and_send_appearances(date=None, user=None):
         appearances = search_words_in_boe(words, boe_items)
 
     for a in appearances:
+        if len(appearances[a]) is 1:
+            message = f'La palabra {appearances[a][0]} aparece en el articulo "{a}". El PDF es {boe_items[a]["pdf"]}'
+        else:
+            message = f'Las palabras {', '.join(appearances[a])} aparecen en el articulo "{a}". El PDF es {boe_items[a]["pdf"]}'
+
         bot.send_message(
             int(user),
-            f'Las palabras {appearances[a]} aparecen en el articulo "{a}". El PDF es {boe_items[a]["pdf"]}'
+            message
         )
 
 

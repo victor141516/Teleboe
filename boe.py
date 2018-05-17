@@ -56,12 +56,13 @@ def scrap_boe_items(boe_dict):
     return out_dict
 
 
-def search_words_in_boe(words, boe_items):
+def search_words_in_boe(words, boe_items, case_sensitive=False):
     appearances = {}
     for name in boe_items:
         item = boe_items[name]
         for word in words:
-            if word in item['data']:
+            cased_item_data = item['data'] is case_sensitive else item['data'].lower()
+            if word in cased_item_data:
                 if 'name' not in appearances:
                     appearances[name] = []
                 appearances[name] += [word]
