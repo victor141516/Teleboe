@@ -61,8 +61,10 @@ def search_words_in_boe(words, boe_items, case_sensitive=False):
     for name in boe_items:
         item = boe_items[name]
         for word in words:
-            cased_item_data = item['data'] is case_sensitive else item['data'].lower()
-            if word in cased_item_data:
+            item is case_sensitive else item.lower()
+            cased_item_data = item['data'] if case_sensitive else item['data'].lower()
+            cased_word = word if case_sensitive else word.lower()
+            if cased_word in cased_item_data:
                 if 'name' not in appearances:
                     appearances[name] = []
                 appearances[name] += [word]
