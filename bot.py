@@ -104,23 +104,37 @@ def delete_word_receive(message):
     bot.reply_to(message, f'Tu palabra "{word}" ha sido eliminada')
 
 
+@bot.message_handler(commands=['check'])
+def check_day(message):
+    if message.text.split('/check')[1] == '':
+        check_and_send_appearances(user=message.from_user.id)
+    else:
+        check_and_send_appearances(message.text.split('/check ')[1], user=message.from_user.id)
+
+
+def check_and_send_appearances(date=None, user=None):
+    if user is None:
+        users = [each.decode('utf-8') for each in db.keys()]
+    else:
+        users = [user]
+    r = requests.get(get_boe_url(date))
+    boe_items_empty = parse_boe(r.text)
+    boe_items = scrap_boe_items(boe_items_empty)
+    for user in users:
+        words = json.loads(db.get(user))
+        appearances = search_words_in_boe(words, boe_items)
+
+    for a in appearances:
+        bot.sent_message(
+            int(user),
+            f'Las palabras {appearances[a]} aparecen en el articulo "{a}". El PDF es {boe_items[a]["pdf"]}'
+        )
+
+
 def check_boe():
-    # get words of all users from db
     while True:
         if datetime.datetime.now().hour is 8:
-            users = [each.decode('utf-8') for each in db.keys()]
-            r = requests.get(get_boe_url())
-            boe_items_empty = parse_boe(r.text)
-            boe_items = scrap_boe_items(boe_items_empty)
-            for user in users:
-                words = json.loads(db.get(user))
-                appearances = search_words_in_boe(words, boe_items)
-
-            for a in appearances:
-                bot.sent_message(
-                    int(user),
-                    f'Las palabras {appearances[a]} aparecen en el articulo "{a}". El PDF es {boe_items[a]["pdf"]}'
-                )
+            check_and_send_appearances()
             time.sleep(36000)
         else:
             time.sleep(3600)
