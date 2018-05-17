@@ -85,6 +85,14 @@ def delete_word_send(message):
     bot.send_message(message.chat.id, 'Elige la palabra de búsqueda que quiere borrar', reply_markup=markup)
 
 
+@bot.message_handler(commands=['check'])
+def check_day(message):
+    if message.text.split('/check')[1] == '':
+        check_and_send_appearances(user=message.from_user.id)
+    else:
+        check_and_send_appearances(message.text.split('/check ')[1], user=message.from_user.id)
+
+
 @bot.message_handler(func=lambda m: True)
 def delete_word_receive(message):
     words = db.get(message.from_user.id)
@@ -102,14 +110,6 @@ def delete_word_receive(message):
     words = json.dumps(words)
     db.set(message.from_user.id, words)
     bot.reply_to(message, f'Tu palabra "{word}" ha sido eliminada')
-
-
-@bot.message_handler(commands=['check'])
-def check_day(message):
-    if message.text.split('/check')[1] == '':
-        check_and_send_appearances(user=message.from_user.id)
-    else:
-        check_and_send_appearances(message.text.split('/check ')[1], user=message.from_user.id)
 
 
 def check_and_send_appearances(date=None, user=None):
