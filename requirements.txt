@@ -1,8 +1,8 @@
-apistar==0.5.18
+apistar==0.5.41
 certifi==2018.4.16
 chardet==3.0.4
 click==6.7
-gunicorn==19.8.1
+gunicorn==19.9.0
 idna==2.6
 jinja2==2.10
 MarkupSafe==1.0
