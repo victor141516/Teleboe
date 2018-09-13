@@ -16,8 +16,9 @@ import time
 
 TG_TOKEN = os.environ['TG_TOKEN']
 WEBHOOK_URL = os.environ.get('WEBHOOK_URL', False)
+REDIS_HOST = os.environ.get('REDIS_HOST', 'redis')
 bot = telebot.TeleBot(TG_TOKEN)
-db = redis.StrictRedis(host='redis', port=6379, db=0)
+db = redis.StrictRedis(host=REDIS_HOST, port=6379, db=0)
 
 
 @bot.message_handler(commands=['start'])
